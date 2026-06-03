@@ -21,7 +21,6 @@ TARGET_CPU_VARIANT_RUNTIME := generic
 # Additional
 TARGET_USES_UEFI := true
 TARGET_IS_64_BIT := true
-TARGET_USES_64_BIT_BINDER := true # For android-12.1 and below
 TARGET_BOARD_SUFFIX := _64
 TARGET_NO_BOOTLOADER := true
 
@@ -251,6 +250,7 @@ OF_UNBIND_SDCARD_F2FS := 1
 
 # Version/Maintainer
 TW_DEVICE_VERSION := SavedByLight & ravindu644
+OF_VERSION := R12 1.0
 SHRP_MAINTAINER := SavedByLight & ravindu644
 OF_MAINTAINER := SavedByLight & ravindu644
 MAINTAINER := SavedByLight & ravindu644
