@@ -91,7 +91,9 @@ BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 # Kernel modules
-TW_LOAD_VENDOR_MODULES := $(shell echo \"$(shell ls $(DEVICE_PATH)/recovery/root/lib/modules)\")
+TW_LOAD_VENDOR_MODULES := $(shell echo \"$(notdir $(wildcard $(DEVICE_PATH)/recovery/root/lib/modules/*.ko))\")
+# Also search /lib/modules for the matching ramdisk modules (including SPI).
+TW_LOAD_VENDOR_BOOT_MODULES := true
 
 BOARD_ROOT_EXTRA_FOLDERS := \
     carrier \
