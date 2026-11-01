@@ -84,9 +84,20 @@ build_recovery() {
     export _JAVA_OPTIONS=-Xmx4096m
     {
         # Android envsetup is sourced intentionally; its functions drive the build.
+        # Its vendor scripts use optional probes that may return nonzero.
+        set +e
         # shellcheck disable=SC1091
         source build/envsetup.sh
+        if ! declare -F lunch >/dev/null || ! declare -F m >/dev/null; then
+            printf 'Android envsetup did not define lunch and m.\n' >&2
+            return 1
+        fi
         lunch twrp_a05s-eng
+        local lunch_status=$?
+        set -e
+        if (( lunch_status != 0 )); then
+            return "$lunch_status"
+        fi
         m -j2 recoveryimage
     } 2>&1 | tee "$ARTIFACT_DIR/build.log"
 }
