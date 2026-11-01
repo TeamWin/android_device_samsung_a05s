@@ -1,0 +1,5 @@
+/artifacts/
+/out/
+/jdm-patch.log
+/.jdm_patch_lock/
+*.img.md5
