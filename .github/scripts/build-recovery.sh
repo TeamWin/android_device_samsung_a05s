@@ -35,6 +35,15 @@ sync_sources() {
         return 1
     fi
     repo manifest -r -o "$ARTIFACT_DIR/resolved-manifest.xml"
+    # Preserve an explicit tracking-ID release when the same input frame also
+    # reports zero touch-major/pressure (observed on the Himax panel).
+    git -C bootable/recovery apply --check \
+        "$DEVICE_TREE/.github/patches/preserve-tracking-id-release.patch"
+    git -C bootable/recovery apply \
+        "$DEVICE_TREE/.github/patches/preserve-tracking-id-release.patch"
+    python3 "$DEVICE_TREE/.github/scripts/test-touch-release.py" \
+        "$BUILD_ROOT/bootable/recovery/minuitwrp/events.cpp" \
+        2>&1 | tee "$ARTIFACT_DIR/touch-release-test.txt"
     mkdir -p device/samsung/a05s
     rsync -a --exclude=.git --exclude=.github \
         "$DEVICE_TREE/" device/samsung/a05s/
@@ -67,6 +76,7 @@ PY
         printf 'Source manifest: twrp-12.1; exact revisions in resolved-manifest.xml\n'
         printf 'Build target: twrp_a05s-eng recoveryimage\n'
         printf 'Kernel: existing prebuilt, no kernel compilation\n'
+        printf 'TWRP input: preserve explicit tracking-ID release before zero pressure\n'
         printf 'JDM haptics hook: skipped (TW_NO_HAPTICS=true)\n'
         printf 'Build URL: https://github.com/%s/actions/runs/%s\n' "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
     } > "$ARTIFACT_DIR/build-info.txt"

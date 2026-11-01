@@ -1,0 +1,23 @@
+diff --git a/minuitwrp/events.cpp b/minuitwrp/events.cpp
+--- a/minuitwrp/events.cpp
++++ b/minuitwrp/events.cpp
+@@ -558,7 +558,8 @@
+                 // We're in a touch release, although some devices will still send positions as well
+                 e->mt_p.x = 0;
+                 e->mt_p.y = 0;
+-                touchReleaseOnNextSynReport = 1;
++                if (touchReleaseOnNextSynReport != 2)
++                    touchReleaseOnNextSynReport = 1;
+ #endif
+             }
+ #ifdef _EVENT_LOGGING
+@@ -572,7 +573,8 @@
+                 // We're in a touch release, although some devices will still send positions as well
+                 e->mt_p.x = 0;
+                 e->mt_p.y = 0;
+-                touchReleaseOnNextSynReport = 1;
++                if (touchReleaseOnNextSynReport != 2)
++                    touchReleaseOnNextSynReport = 1;
+             }
+ #ifdef _EVENT_LOGGING
+             printf("EV: %s => EV_ABS  ABS_MT_PRESSURE  %d\n", e->deviceName, ev->value);

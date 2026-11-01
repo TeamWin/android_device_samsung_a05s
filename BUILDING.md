@@ -14,6 +14,11 @@ Chipone, Goodix e Ilitek. Uma compilação bem-sucedida não comprova funcioname
 - O serviço existente de touch consulta seus módulos e os módulos de plataforma,
   com os dois `--dirname` suportados pelo modprobe Android da branch 12.1.
 - A aspa de fechamento inválida de `FOX_TARGET_DEVICES` em `vendorsetup.sh` foi corrigida.
+- O build aplica `.github/patches/preserve-tracking-id-release.patch` ao TWRP.
+  Na captura real, o Himax envia tracking ID `-1`, touch-major zero e pressão zero
+  no mesmo frame. O parser original sobrescreve o sinal explícito de soltar o dedo
+  e não entrega `TOUCH_RELEASE` à interface. O ajuste preserva esse sinal e possui
+  teste de regressão sobre a função original de tratamento dos eventos.
 
 O build TeamWin copia `recovery/root/` automaticamente; não há cópia duplicada por
 `PRODUCT_COPY_FILES`. A pasta `Patches/` e todos os arquivos binários permanecem intactos.
@@ -26,7 +31,7 @@ O workflow **Build TWRP a05s (Himax)** executa a cada push na branch `main` e ta
 pode ser iniciado manualmente em **Actions → Run workflow**.
 
 Ele usa o manifest mínimo `twrp-12.1`, verifica as versões dos módulos Himax/Chipone,
-compila somente `recoveryimage` com o kernel prebuilt e verifica os arquivos de touch
+testa o tratamento do fim do toque, compila somente `recoveryimage` com o kernel prebuilt e verifica os arquivos de touch
 no ramdisk gerado. Não modifica vbmeta nem grava qualquer partição do aparelho.
 
 Ao terminar, baixe o artefato da execução. Em caso de sucesso, ele contém:
