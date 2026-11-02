@@ -10,7 +10,8 @@ service dmesg-logger /sbin/sh -c "/system/bin/timeout 60 /system/bin/dmesg -w > 
     seclabel u:r:recovery:s0
     disabled
 
-service load-touch-modules /system/bin/modprobe --all=/vendor/lib/modules/touch/modules.load --dirname=/vendor/lib/modules/touch
+# Resolve touch dependencies against both sets of matching ramdisk modules.
+service load-touch-modules /system/bin/modprobe --all=/vendor/lib/modules/touch/modules.load --dirname=/vendor/lib/modules/touch --dirname=/lib/modules
     class core
     oneshot
     seclabel u:r:recovery:s0

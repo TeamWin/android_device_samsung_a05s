@@ -43,7 +43,7 @@ export FOX_USE_SED_BINARY=1
 export FOX_RECOVERY_INSTALL_PARTITION=/dev/block/by-name/recovery
 export FOX_RECOVERY_SYSTEM_PARTITION=/dev/block/mapper/system
 export FOX_RECOVERY_VENDOR_PARTITION=/dev/block/mapper/vendor
-export FOX_TARGET_DEVICES="a05s”
+export FOX_TARGET_DEVICES="a05s"
 
 	# Let's see which are our build vars
     if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
