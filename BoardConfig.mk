@@ -252,10 +252,10 @@ OF_FIX_DECRYPTION_ON_DATA_MEDIA := 1
 OF_UNBIND_SDCARD_F2FS := 1
 
 # Version/Maintainer
-TW_DEVICE_VERSION := SavedByLight & ravindu644
-SHRP_MAINTAINER := SavedByLight & ravindu644
-OF_MAINTAINER := SavedByLight & ravindu644
-MAINTAINER := SavedByLight & ravindu644
+TW_DEVICE_VERSION := SavedByLight & ravindu644 & Egacyer
+SHRP_MAINTAINER := SavedByLight & ravindu644 & Egacyer
+OF_MAINTAINER := SavedByLight & ravindu644 & Egacyer
+MAINTAINER := SavedByLight & ravindu644 & Egacyer
 
 # For testing only
 BETA_BUILD := true
