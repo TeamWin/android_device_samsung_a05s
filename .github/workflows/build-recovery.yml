@@ -1,0 +1,65 @@
+name: Build TWRP a05s (Himax)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: twrp-a05s-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  recovery:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    env:
+      ARTIFACT_DIR: ${{ github.workspace }}/artifacts
+      DEVICE_TREE: ${{ github.workspace }}/device-tree
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out device tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: device-tree
+          persist-credentials: false
+
+      - name: Prepare runner
+        run: |
+          mkdir -p "$ARTIFACT_DIR"
+          printf 'BUILD_ROOT=%s/twrp-a05s\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          # Remove unused SDKs only on this disposable hosted runner.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            bc bison build-essential ca-certificates curl flex g++-multilib \
+            gcc-multilib git gnupg gperf kmod lib32readline-dev lib32z1-dev \
+            libelf-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev \
+            libssl-dev libxml2-utils lzop openjdk-11-jdk-headless python3 \
+            rsync unzip zip zlib1g-dev
+          df -h
+          free -h
+
+      - name: Synchronize TWRP 12.1 sources
+        run: bash "$DEVICE_TREE/.github/scripts/build-recovery.sh" sync
+
+      - name: Build recovery image
+        run: bash "$DEVICE_TREE/.github/scripts/build-recovery.sh" build
+
+      - name: Verify and collect images
+        run: bash "$DEVICE_TREE/.github/scripts/build-recovery.sh" collect
+
+      - name: Upload images and available logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: twrp-a05s-himax-${{ github.run_number }}-${{ job.status }}
+          path: artifacts/
+          retention-days: 7
+          compression-level: 1
+          if-no-files-found: warn

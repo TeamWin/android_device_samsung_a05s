@@ -1,12 +1,23 @@
 # Android device tree for samsung SM-A057(F/G/M) (a05s)
 
+# Maintainers
+ - [SavedByLight](https://github.com/SavedByLight)
+ - [ravindu644](https://github.com/ravindu644)
+ - [Egacyer](https://github.com/egacyer)
+
 # Contributors
  - [Ravindu644](https://github.com/ravindu644) - Custom Kernel Developer, Fixed touch implementation in Chipone
  - [SavedByLight](https://github.com/SavedByLight) - Made the initial tree adding all the TW flags to boardconfig
+ - [Egacyer](https://github.com/egacyer) - Maintainer, Himax touchscreen bring-up, touch-release fixes for buttons and the unlock slider, and on-device testing
 
 # Bugs
  - Data Mounting
- - himax touch screen is currently broken (We want to fix this but are having a hard time finding a willing tester to pull logs and things in order to fix it)
+ - Encrypted /data decryption on One UI 7 / Android 15
+
+# Touchscreen status
+ - Himax HX83112F (TXD): driver and firmware loading, button activation, and the unlock slider verified on SM-A057M with One UI 7 / Android 15
+ - Button and slider operation require the accompanying TWRP input-release fix in `.github/patches/preserve-tracking-id-release.patch`, applied by the included build workflow
+ - Chipone, Goodix, and Ilitek driver files are preserved; hardware regression testing on those variants is still needed
 
 # Kernel
 https://github.com/ravindu644/android_kernel_sm_a057f (the work of @ravindu644)
